@@ -6,7 +6,7 @@ export const CustomInput = ({ value, onChange, onVariablesChange = () => {}, nod
   const textareaRef = useRef(null);
   const createInputNodeForVariable = useStore((state) => state.createInputNodeForVariable);
 
-  const allowedVariables = ["input", "output", "llm"];
+  const allowedVariables = ["input", "llm"];
 
   const extractVariables = (text) => {
     if (!text) return [];
