@@ -112,7 +112,7 @@ export const BaseNode = ({ id, data, config }) => {
       {/* Header */}
       <div className="flex justify-between items-start mb-3 relative z-10">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-gradient-to-r from-violet-400 to-purple-500" />
+          {config.icon && <config.icon size={18} className="text-violet-600" />}
           <div className="text-base font-bold text-violet-800">
             {config.title}
           </div>

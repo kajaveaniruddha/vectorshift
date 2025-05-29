@@ -1,7 +1,10 @@
+import { FileInput , FileOutput, BrainCircuit, Text, TestTube, Database } from 'lucide-react';
+
 export const nodeConfig = {
   //node name
   customInput: {
     title: "Input",
+    icon: FileInput,
     fields: [
       {
         type: "input",
@@ -25,6 +28,7 @@ export const nodeConfig = {
 
   customOutput: {
     title: "Output",
+    icon: FileOutput,
     fields: [
       {
         type: "input",
@@ -48,6 +52,7 @@ export const nodeConfig = {
 
   llm: {
     title: "LLM",
+    icon: BrainCircuit,
     content: "This is a LLM.",
     inputs: [{ id: "system" }, { id: "prompt" }],
     outputs: [{ id: "response" }],
@@ -55,6 +60,7 @@ export const nodeConfig = {
 
   text: {
     title: "Text",
+    icon: Text,
     description: "Define text with variables using {{variableName}}",
     fields: [
       {
@@ -75,6 +81,7 @@ export const nodeConfig = {
 
   testing: {
     title: "Testing Node",
+    icon: TestTube,
     content: "This is a testing node",
     fields: [
       {
@@ -100,6 +107,7 @@ export const nodeConfig = {
 
   sqlQuery: {
     title: "SQL Query",
+    icon: Database,
     description: "Execute SQL queries with parameters",
     category: "database",
     fields: [

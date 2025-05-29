@@ -1,4 +1,5 @@
 // draggableNode.js
+import { nodeConfig } from './nodes/nodeConfig';
 
 export const DraggableNode = ({ type, label }) => {
   const onDragStart = (event, nodeType) => {
@@ -10,6 +11,8 @@ export const DraggableNode = ({ type, label }) => {
     );
     event.dataTransfer.effectAllowed = "move";
   };
+
+  const NodeIcon = nodeConfig[type]?.icon;
 
   return (
     <div
@@ -32,9 +35,11 @@ export const DraggableNode = ({ type, label }) => {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full">
-        <div className="w-6 h-6 mb-1 rounded-full bg-white/20 flex items-center justify-center">
-          <div className="w-3 h-3 rounded-full bg-white/60" />
-        </div>
+        {NodeIcon && (
+          <div className="mb-1 text-white/90">
+            <NodeIcon size={24} />
+          </div>
+        )}
         <span className="text-white font-medium text-sm text-center px-2 leading-tight">
           {label}
         </span>
