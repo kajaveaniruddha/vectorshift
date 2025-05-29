@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef } from "react"; // Import useRef
+import { useState, useEffect, useRef } from "react";
 import { Handle, Position } from "reactflow";
+import { CustomInput } from "./CustomInput";
 
 export const BaseNode = ({ id, data, config }) => {
   const [nodeData, setNodeData] = useState(data || {});
+  const [dynamicInputs, setDynamicInputs] = useState([]);
   const textareaRef = useRef(null); // Ref for the textarea
 
   const adjustTextareaHeight = (textarea) => {
@@ -11,6 +13,10 @@ export const BaseNode = ({ id, data, config }) => {
     // Reset height to measure scrollHeight accurately
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
+  const handleVariablesChange = (variables) => {
+    setDynamicInputs(variables);
   };
 
   const handleChange = (field, value) => {
@@ -35,19 +41,11 @@ export const BaseNode = ({ id, data, config }) => {
             <label className="text-xs text-violet-700 font-semibold">
               {field.label}:
             </label>
-            <textarea
-              ref={textareaRef}
+            <CustomInput
               value={nodeData[field.name] || field.default || ""}
-              onChange={(e) => handleChange(field.name, e.target.value)}
-              rows={1}
-              className="w-full px-3 py-2 text-sm border-2 border-violet-200 rounded-lg 
-                bg-white hover:border-violet-300 focus:outline-none focus:ring-2 
-                focus:ring-violet-400/50 focus:border-violet-400 transition-all duration-200
-                placeholder-violet-300 resize-none no-scrollbar whitespace-pre-wrap"
-              style={{ 
-                minHeight: '2rem',
-                width: '300px'  
-              }}
+              onChange={(value) => handleChange(field.name, value)}
+              onVariablesChange={handleVariablesChange}
+              nodeId={id} // added nodeId prop
             />
           </div>
         );
@@ -81,14 +79,15 @@ export const BaseNode = ({ id, data, config }) => {
             <label className="text-xs text-violet-700 font-semibold">
               {field.label}:
             </label>
-            <textarea
+            <CustomInput
               value={nodeData[field.name] || field.default || ""}
-              onChange={(e) => handleChange(field.name, e.target.value)}
+              onChange={(value) => handleChange(field.name, value)} // changed callback here
               placeholder={field.placeholder}
               className="w-full px-3 py-2 text-sm border-2 border-violet-200 rounded-lg 
                 bg-white hover:border-violet-300 focus:outline-none focus:ring-2 
                 focus:ring-violet-400/50 focus:border-violet-400 transition-all duration-200
                 min-h-[90px] resize-none placeholder-violet-300"
+              nodeId={id} // added nodeId prop
             />
           </div>
         );
@@ -136,6 +135,21 @@ export const BaseNode = ({ id, data, config }) => {
 
       {/* Fields */}
       <div className="space-y-4 relative z-10">{renderFields()}</div>
+
+      {/* Dynamic Input handles */}
+      {dynamicInputs.map((variable, index) => (
+        <Handle
+          key={`dynamic-input-${variable}`}
+          type="target"
+          position={Position.Left}
+          id={`${id}-var-${variable}`}
+          className="w-4 h-4 bg-gradient-to-r from-violet-400 to-purple-500 border-2 border-white 
+            shadow-lg hover:scale-110 transition-transform duration-200"
+          style={{
+            top: `${((index + 1) * 100) / (dynamicInputs.length + 1)}%`,
+          }}
+        />
+      ))}
 
       {/* Input handles */}
       {config.inputs?.map((input, index) => (
